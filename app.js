@@ -14,7 +14,7 @@ function loadSettings() {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (raw) return JSON.parse(raw);
   } catch (e) {}
-  return { numQuestions: 10, pedagogique: true };
+  return { numQuestions: 10 };
 }
 function saveSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }
 
@@ -49,7 +49,7 @@ function refreshResumeButton() {
 
 // ------------------------- Home -------------------------
 document.getElementById("btn-new").addEventListener("click", () => {
-  saveSession({ total: settings.numQuestions, index: 0, marks: [], selectedLetter: null, showModal: false });
+  saveSession({ total: settings.numQuestions, index: 0, marks: [], selectedLetters: [], showModal: false });
   renderQuiz();
   showScreen("quiz");
 });
@@ -61,15 +61,10 @@ document.getElementById("btn-aide").addEventListener("click", () => showScreen("
 
 // ------------------------- Options -------------------------
 function renderOptions() {
-  document.getElementById("opt-pedago").checked = settings.pedagogique;
   document.querySelectorAll('input[name="numq"]').forEach((r) => {
     r.checked = parseInt(r.value, 10) === settings.numQuestions;
   });
 }
-document.getElementById("opt-pedago").addEventListener("change", (e) => {
-  settings.pedagogique = e.target.checked;
-  saveSettings();
-});
 document.querySelectorAll('input[name="numq"]').forEach((r) => {
   r.addEventListener("change", () => {
     settings.numQuestions = parseInt(r.value, 10);
@@ -80,9 +75,10 @@ document.querySelectorAll('input[name="numq"]').forEach((r) => {
 // ------------------------- Quiz -------------------------
 function renderQuiz() {
   if (!session) return;
+  if (!session.selectedLetters) session.selectedLetters = [];
   document.getElementById("progress-fill").style.width = (session.index / session.total) * 100 + "%";
   document.getElementById("q-num").textContent = String(session.index + 1).padStart(2, "0");
-  document.getElementById("q-letter").textContent = session.selectedLetter || "";
+  document.getElementById("q-letter").textContent = session.selectedLetters.join(",");
   document.getElementById("q-counter").textContent = `Question ${session.index + 1} / ${session.total}`;
 
   const markEl = document.getElementById("q-mark");
@@ -100,43 +96,43 @@ function renderQuiz() {
   answersEl.innerHTML = "";
   LETTERS.forEach((letter) => {
     const b = document.createElement("button");
-    b.className = "answer-btn" + (session.selectedLetter === letter ? " selected" : "");
+    b.className = "answer-btn" + (session.selectedLetters.includes(letter) ? " selected" : "");
     b.textContent = letter;
-    b.addEventListener("click", () => selectLetter(letter));
+    b.addEventListener("click", () => toggleLetter(letter));
     answersEl.appendChild(b);
   });
 
-  document.getElementById("btn-correction").disabled = !session.selectedLetter;
+  document.getElementById("btn-correction").disabled = session.selectedLetters.length === 0;
   document.getElementById("btn-valider").disabled = !currentMark;
 
   document.getElementById("modal-overlay").classList.toggle("hidden", !session.showModal);
   if (session.showModal) {
     document.getElementById("modal-q-title").textContent = `Question ${session.index + 1}`;
-    document.getElementById("modal-letter").textContent = session.selectedLetter;
+    document.getElementById("modal-letter").textContent = session.selectedLetters.join(", ");
   }
 }
 
-function selectLetter(letter) {
+// Sélection multiple : chaque tap ajoute/retire la lettre. Utile car
+// certaines questions du code ont plusieurs bonnes réponses.
+function toggleLetter(letter) {
   if (session.showModal) return;
-  session.selectedLetter = letter;
+  const i = session.selectedLetters.indexOf(letter);
+  if (i === -1) session.selectedLetters.push(letter);
+  else session.selectedLetters.splice(i, 1);
+  session.selectedLetters.sort();
   saveSession(session);
-  // mode pédagogique : ouverture auto de la correction
-  if (settings.pedagogique && !session.marks[session.index]) {
-    session.showModal = true;
-    saveSession(session);
-  }
   renderQuiz();
 }
 
 document.getElementById("btn-correction").addEventListener("click", () => {
-  if (!session.selectedLetter) return;
+  if (session.selectedLetters.length === 0) return;
   session.showModal = true;
   saveSession(session);
   renderQuiz();
 });
 
 function mark(isCorrect) {
-  session.marks[session.index] = { letter: session.selectedLetter, correct: isCorrect };
+  session.marks[session.index] = { letters: [...session.selectedLetters], correct: isCorrect };
   session.showModal = false;
   saveSession(session);
   renderQuiz();
@@ -154,7 +150,7 @@ document.getElementById("btn-valider").addEventListener("click", () => {
     showScreen("results");
   } else {
     session.index += 1;
-    session.selectedLetter = null;
+    session.selectedLetters = [];
     session.showModal = false;
     saveSession(session);
     renderQuiz();
