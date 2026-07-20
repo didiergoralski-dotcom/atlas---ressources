@@ -1,406 +1,223 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ressources · ATLAS Auto-École</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>Boîtier Code — ATLAS Auto-École</title>
+<meta name="description" content="Boîtier de correction du code de la route pour la salle de code ATLAS Auto-École" />
+<meta name="theme-color" content="#0A1628" />
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Boîtier Code" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@400;500;600&display=swap');
-
-  :root {
-    --navy: #0A1628;
-    --navy-light: #15263F;
-    --navy-card: #1C2F4C;
-    --orange: #FF5A1F;
-    --cream: #F6F2E9;
-    --line: rgba(255,255,255,0.12);
-    --text-soft: rgba(255,255,255,0.62);
-    --text-soft-dark: rgba(10,22,40,0.6);
+  :root{
+    --navy:#0A1628; --orange:#FF5A1F; --cream:#F5F3EC; --slate:#5C6B7A;
+    --box-green:#1CA968; --btn-red:#B3261E; --btn-yellow:#D9C24A; --btn-green:#2F9E44;
+    --mark-green:#2F9E44; --mark-red:#E03131;
   }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--cream);font-family:'Inter',system-ui,sans-serif;}
+  #app{min-height:100vh; max-width:480px; margin:0 auto; position:relative;}
+  .hidden{display:none !important;}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  .header{background:var(--navy); color:#fff; display:flex; align-items:center; gap:12px; padding:18px 20px;}
+  .header button{background:none;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;padding:4px;}
+  .header .title{font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:24px; letter-spacing:0.5px;}
 
-  html { scroll-behavior: smooth; }
+  .hero{background:var(--navy); padding:40px 24px 30px; text-align:center;}
+  .hero .brand{font-family:'Barlow Condensed',sans-serif; color:var(--orange); font-weight:800; font-size:34px; letter-spacing:1px;}
+  .hero .sub{color:#fff; font-size:13px; letter-spacing:3px; text-transform:uppercase; opacity:.75; margin-top:-4px;}
+  .hero .app-title{color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:26px; margin-top:18px;}
 
-  body {
-    font-family: 'Barlow', sans-serif;
-    background: var(--navy);
-    color: #FFFFFF;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+  .content{padding:24px; max-width:420px; margin:0 auto;}
+  .stack{display:flex; flex-direction:column; gap:14px;}
+
+  .btn-big{
+    width:100%; padding:18px 20px; border-radius:999px; border:none;
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:22px; letter-spacing:1px;
+    text-transform:uppercase; color:#fff; cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,.18);
   }
-
-  a { color: inherit; }
-
-  /* ===== HERO ===== */
-  .hero {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 64px 24px 56px;
+  .btn-big:disabled{background:#B9C2CC !important; box-shadow:none; cursor:not-allowed;}
+  .btn-big:active:not(:disabled){transform:translateY(2px); box-shadow:none;}
+  .btn-orange{background:var(--orange);} .btn-navy{background:var(--navy);}
+  .btn-outline{
+    display:flex; align-items:center; justify-content:center; gap:8px; padding:14px;
+    border-radius:999px; background:transparent; font-weight:600; font-size:16px; cursor:pointer;
   }
+  .btn-outline.navy{border:2px solid var(--navy); color:var(--navy);}
+  .btn-outline.slate{border:2px solid var(--slate); color:var(--slate);}
 
-  .eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--orange);
-    margin-bottom: 18px;
-  }
+  .card{background:#fff; border-radius:16px; padding:18px; margin-bottom:16px;}
+  .card-row{display:flex; justify-content:space-between; align-items:center;}
+  .card-title{font-weight:600; color:var(--navy);}
+  .card-sub{font-size:13px; color:var(--slate);}
+  .section-label{color:var(--slate); font-size:13px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;}
+  input[type=checkbox], input[type=radio]{width:22px; height:22px; accent-color:var(--orange);}
+  .radio-row{display:flex; align-items:center; gap:12px; padding:10px 0; cursor:pointer; font-size:17px; color:var(--navy);}
 
-  .hero h1 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: clamp(40px, 9vw, 64px);
-    line-height: 1.04;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 22px;
-  }
+  .help p{line-height:1.7; color:var(--navy);}
+  .help .muted{color:var(--slate); font-size:14px;}
 
-  .hero h1 span { color: var(--orange); }
+  .progress-wrap{background:var(--navy); padding:16px 20px;}
+  .progress-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
+  .progress-top .lbl{color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:1px;}
+  .progress-bar{height:6px; background:rgba(255,255,255,.15); border-radius:4px; overflow:hidden;}
+  .progress-fill{height:100%; background:var(--orange); transition:width .3s;}
 
-  .hero p {
-    font-size: 17px;
-    color: var(--text-soft);
-    max-width: 480px;
-  }
+  .boitier{background:var(--box-green); border-radius:24px; padding:24px 20px 32px; margin-top:8px;}
+  .num-box{position:relative; background:#D9D9D9; border-radius:10px; padding:14px 30px; min-width:130px; text-align:center; margin:0 auto 22px;}
+  .num-box .num{font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:46px; color:#20242B;}
+  .num-box .letter{position:absolute; top:8px; right:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; color:#20242B; letter-spacing:0.5px;}
+  .num-box .mark{position:absolute; top:-10px; left:-10px; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800;}
+  .mark.ok{background:var(--mark-green);} .mark.ko{background:var(--mark-red);}
 
-  /* ===== ROUTE (signature element) ===== */
-  .route {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 0 24px 40px;
-    position: relative;
-  }
+  .answers{display:flex; flex-direction:column; gap:14px; margin:18px 0;}
+  .answer-btn{padding:16px; border-radius:999px; border:none; background:var(--btn-yellow); font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:22px; color:#20242B; box-shadow:0 3px 0 rgba(0,0,0,.18); cursor:pointer;}
+  .answer-btn.selected{background:var(--orange);}
 
-  .route::before {
-    content: "";
-    position: absolute;
-    top: 12px;
-    bottom: 60px;
-    left: 35px;
-    width: 0;
-    border-left: 3px dashed rgba(255,90,31,0.35);
-  }
+  .qcounter{text-align:center; margin-top:14px; color:var(--slate); font-size:13px;}
 
-  @media (min-width: 640px) {
-    .route::before { left: 43px; }
-  }
+  .modal-overlay{position:fixed; inset:0; background:rgba(10,22,40,.45); display:flex; align-items:center; justify-content:center; padding:24px; z-index:50;}
+  .modal{background:#fff; border-radius:20px; padding:26px; width:100%; max-width:360px; box-shadow:0 8px 30px rgba(0,0,0,.25);}
+  .modal .q-title{font-size:18px; color:var(--navy); font-weight:700; margin-bottom:6px;}
+  .modal .q-sub{font-size:15px; color:var(--slate); margin-bottom:22px;}
+  .modal .q-sub strong{color:var(--navy);}
+  .modal-actions{display:flex; gap:12px;}
+  .modal-actions button{flex:1; padding:14px 0; border-radius:12px; font-weight:700; font-size:16px; cursor:pointer;}
+  .btn-incorrect{border:2px solid var(--mark-red); background:#FDECEC; color:var(--mark-red);}
+  .btn-correct{border:2px solid var(--mark-green); background:#EAF7ED; color:var(--mark-green);}
 
-  .phase {
-    position: relative;
-    padding-left: 70px;
-    margin-bottom: 8px;
-  }
+  .score-card{background:#fff; border-radius:20px; padding:28px; box-shadow:0 2px 10px rgba(0,0,0,.08); margin-bottom:20px; text-align:center;}
+  .score-card .score{font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:52px;}
+  .score-card .pct{color:var(--slate); margin-top:4px;}
+  .badge{margin-top:14px; display:inline-block; padding:6px 16px; border-radius:999px; font-weight:700; font-size:13px; letter-spacing:.5px; text-transform:uppercase;}
+  .badge.pass{background:#EAF7ED; color:var(--mark-green);}
+  .badge.fail{background:#FDECEC; color:var(--mark-red);}
 
-  @media (min-width: 640px) {
-    .phase { padding-left: 86px; }
-  }
+  .grid{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:20px;}
+  .grid-cell{background:#fff; border-radius:10px; padding:10px 0; display:flex; flex-direction:column; align-items:center; gap:4px;}
+  .grid-cell .n{font-size:12px; color:var(--slate);}
 
-  .phase-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--text-soft);
-    padding: 28px 0 20px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 24px;
-  }
-
-  .stop {
-    position: relative;
-    margin-bottom: 22px;
-  }
-
-  .stop::before {
-    content: "";
-    position: absolute;
-    left: -70px;
-    top: 22px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--orange);
-    border: 4px solid var(--navy);
-    box-shadow: 0 0 0 3px rgba(255,90,31,0.25);
-  }
-
-  @media (min-width: 640px) {
-    .stop::before { left: -86px; width: 16px; height: 16px; }
-  }
-
-  .card {
-    background: var(--navy-card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 22px 24px;
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-  }
-
-  .card-icon {
-    flex-shrink: 0;
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: rgba(255,90,31,0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-  }
-
-  .card-body { flex: 1; min-width: 0; }
-
-  .card-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 19px;
-    letter-spacing: 0.3px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-  }
-
-  .card-desc {
-    font-size: 14.5px;
-    color: var(--text-soft);
-    margin-bottom: 14px;
-  }
-
-  .card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--orange);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255,90,31,0.4);
-    padding-bottom: 2px;
-    transition: border-color 0.15s, gap 0.15s;
-  }
-
-  .card-link:hover {
-    border-color: var(--orange);
-    gap: 9px;
-  }
-
-  /* ===== FINISH LINE ===== */
-  .finish {
-    position: relative;
-    padding-left: 70px;
-    padding-top: 4px;
-  }
-
-  @media (min-width: 640px) {
-    .finish { padding-left: 86px; }
-  }
-
-  .finish::before {
-    content: "🏁";
-    position: absolute;
-    left: -72px;
-    top: 0px;
-    font-size: 18px;
-  }
-
-  @media (min-width: 640px) {
-    .finish::before { left: -88px; }
-  }
-
-  .finish p {
-    font-size: 14.5px;
-    color: var(--text-soft);
-    font-style: italic;
-  }
-
-  /* ===== CTA BAND ===== */
-  .cta-band {
-    background: var(--cream);
-    color: var(--navy);
-    padding: 56px 24px;
-    margin-top: 16px;
-  }
-
-  .cta-inner {
-    max-width: 760px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .cta-inner .eyebrow {
-    color: var(--orange);
-  }
-
-  .cta-inner h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: clamp(28px, 6vw, 40px);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-    line-height: 1.1;
-  }
-
-  .cta-inner p {
-    font-size: 16px;
-    color: var(--text-soft-dark);
-    max-width: 440px;
-    margin: 0 auto 28px;
-  }
-
-  .cta-btn {
-    display: inline-block;
-    background: var(--navy);
-    color: #FFFFFF;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 16px 36px;
-    border-radius: 999px;
-  }
-
-  /* ===== FOOTER ===== */
-  footer {
-    background: var(--navy);
-    padding: 36px 24px 48px;
-    text-align: center;
-  }
-
-  footer .foot-logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 22px;
-    letter-spacing: 4px;
-    color: var(--orange);
-    margin-bottom: 10px;
-  }
-
-  footer .foot-info {
-    font-size: 13px;
-    color: var(--text-soft);
-    line-height: 1.8;
-  }
-
-  footer .disclosure {
-    font-size: 12px;
-    color: rgba(255,255,255,0.35);
-    max-width: 480px;
-    margin: 24px auto 0;
-    line-height: 1.6;
-  }
+  .install-banner{position:fixed; left:0; right:0; bottom:0; background:var(--navy); color:#fff; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; z-index:60;}
+  .install-banner button{background:var(--orange); border:none; color:#fff; font-weight:700; padding:10px 16px; border-radius:999px; cursor:pointer;}
+  .install-banner .close{background:none; color:#fff; opacity:.7; font-size:20px; padding:0 6px;}
 </style>
 </head>
 <body>
+<div id="app">
 
-  <section class="hero">
-    <div class="eyebrow">ATLAS Auto-École · Ressources</div>
-    <h1>Ta feuille de route<br>avant de prendre <span>la route</span></h1>
-    <p>Quelques essentiels qui font la différence — pendant tes révisions, et une fois le permis en poche. Sélectionnés avec l'œil d'une auto-école qui voit passer des centaines de candidats chaque année.</p>
+  <!-- HOME -->
+  <section id="screen-home">
+    <div class="hero">
+      <div class="brand">ATLAS</div>
+      <div class="sub">Auto-École</div>
+      <div class="app-title">Boîtier Code</div>
+    </div>
+    <div class="content stack">
+      <button class="btn-big btn-orange" id="btn-resume" disabled>Reprendre la série</button>
+      <button class="btn-big btn-navy" id="btn-new">Nouvelle série</button>
+      <button class="btn-outline navy" id="btn-options">⚙️ Options</button>
+      <button class="btn-outline slate" id="btn-aide">❔ Aide</button>
+    </div>
   </section>
 
-  <div class="route">
-
-    <div class="phase">
-      <div class="phase-label">Étape 1 — Pendant tes révisions</div>
-
-      <div class="stop">
-        <div class="card">
-          <div class="card-icon">🎧</div>
-          <div class="card-body">
-            <div class="card-title">Casque antibruit léger</div>
-            <div class="card-desc">Pour rester concentré sur les séries de code, même dans un environnement bruyant.</div>
-            <a class="card-link" href="https://www.amazon.fr/s?k=casque+antibruit+l%C3%A9ger&tag=TON-TAG-21" target="_blank" rel="noopener">Voir sur Amazon →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="stop">
-        <div class="card">
-          <div class="card-icon">🔋</div>
-          <div class="card-body">
-            <div class="card-title">Batterie externe (power bank)</div>
-            <div class="card-desc">Ne tombe jamais à plat en pleine série de révision sur ton téléphone.</div>
-            <a class="card-link" href="https://www.amazon.fr/s?k=batterie+externe+power+bank&tag=TON-TAG-21" target="_blank" rel="noopener">Voir sur Amazon →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="stop">
-        <div class="card">
-          <div class="card-icon">📱</div>
-          <div class="card-body">
-            <div class="card-title">Support téléphone voiture</div>
-            <div class="card-desc">Pratique pour réviser en passager, en covoiturage ou en trajet.</div>
-            <a class="card-link" href="https://www.amazon.fr/s?k=support+t%C3%A9l%C3%A9phone+voiture&tag=TON-TAG-21" target="_blank" rel="noopener">Voir sur Amazon →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="stop">
-        <div class="card">
-          <div class="card-icon">📖</div>
-          <div class="card-body">
-            <div class="card-title">Code Rousseau, version papier</div>
-            <div class="card-desc">Pour annoter, surligner et refaire les fiches loin de l'écran.</div>
-            <a class="card-link" href="https://www.amazon.fr/s?k=code+rousseau+livre&tag=TON-TAG-21" target="_blank" rel="noopener">Voir sur Amazon →</a>
-          </div>
-        </div>
+  <!-- OPTIONS -->
+  <section id="screen-options" class="hidden">
+    <div class="header"><button class="back" data-back="home">←</button><span class="title">Options</span></div>
+    <div class="content">
+      <div class="section-label">Options de série</div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px;">Nombre de questions</div>
+        <label class="radio-row"><input type="radio" name="numq" value="10" /> 10</label>
+        <label class="radio-row"><input type="radio" name="numq" value="20" /> 20</label>
+        <label class="radio-row"><input type="radio" name="numq" value="40" /> 40</label>
       </div>
     </div>
+  </section>
 
-    <div class="phase">
-      <div class="phase-label">Étape 2 — Le permis en poche</div>
+  <!-- AIDE -->
+  <section id="screen-aide" class="hidden">
+    <div class="header"><button class="back" data-back="home">←</button><span class="title">Aide</span></div>
+    <div class="content help">
+      <p>La question et sa réponse sont lues ou projetées sur l'écran de la salle de code. Le boîtier ne contient aucun contenu, il sert uniquement à saisir et corriger.</p>
+      <p><strong>A / B / C / D</strong> — le candidat sélectionne une ou plusieurs lettres (certaines questions ont plusieurs bonnes réponses). Un nouveau tap sur une lettre déjà choisie la retire.</p>
+      <p><strong>CORRECTION</strong> — une fois la ou les lettres choisies, ouvre une fenêtre rappelant la ou les réponses données ; le candidat tape <em>Correct</em> ou <em>Incorrect</em> selon ce qui est annoncé à l'écran.</p>
+      <p><strong>VALIDER</strong> — passe à la question suivante (actif une fois la correction marquée).</p>
+      <p class="muted">À la fin de la série, le total de bonnes réponses s'affiche.</p>
+    </div>
+  </section>
 
-      <div class="stop">
-        <div class="card">
-          <div class="card-icon">🟡</div>
-          <div class="card-body">
-            <div class="card-title">Disque "A" autocollant</div>
-            <div class="card-desc">Obligatoire à l'arrière du véhicule pendant les 3 premières années de conduite.</div>
-            <a class="card-link" href="https://www.amazon.fr/s?k=disque+A+conducteur+novice&tag=TON-TAG-21" target="_blank" rel="noopener">Voir sur Amazon →</a>
-          </div>
-        </div>
+  <!-- QUIZ -->
+  <section id="screen-quiz" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <button class="back" data-back="home" style="background:none;border:none;color:#fff;cursor:pointer;">🏠</button>
+        <span class="lbl">ATLAS · BOÎTIER CODE</span>
+        <span style="width:20px;"></span>
       </div>
-
-      <div class="stop">
-        <div class="card">
-          <div class="card-icon">🦺</div>
-          <div class="card-body">
-            <div class="card-title">Kit de sécurité (gilet + triangle)</div>
-            <div class="card-desc">Obligatoire à bord de tout véhicule — autant l'avoir avant le premier trajet seul.</div>
-            <a class="card-link" href="https://www.amazon.fr/s?k=kit+s%C3%A9curit%C3%A9+gilet+triangle+voiture&tag=TON-TAG-21" target="_blank" rel="noopener">Voir sur Amazon →</a>
-          </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div class="content">
+      <div class="boitier">
+        <div class="num-box">
+          <span class="num" id="q-num">01</span>
+          <span class="letter" id="q-letter"></span>
+          <div class="mark hidden" id="q-mark"></div>
         </div>
+        <button class="btn-big" style="background:var(--btn-red); margin-bottom:16px;" id="btn-correction" disabled>Correction</button>
+        <div class="answers" id="answers"></div>
+        <button class="btn-big" style="background:var(--btn-green);" id="btn-valider" disabled>Valider</button>
+      </div>
+      <div class="qcounter" id="q-counter">Question 1 / 10</div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="screen-results" class="hidden">
+    <div class="header"><button class="back" data-back="home">←</button><span class="title">Résultat</span></div>
+    <div class="content" style="text-align:center;">
+      <div class="score-card">
+        <div class="score" id="res-score">0/10</div>
+        <div class="pct" id="res-pct">0% de bonnes réponses</div>
+        <div class="badge" id="res-badge">—</div>
+      </div>
+      <div class="grid" id="res-grid"></div>
+      <button class="btn-big btn-orange" id="btn-back-home">↺ Retour à l'accueil</button>
+    </div>
+  </section>
+
+  <!-- Modale correction -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <div class="q-title" id="modal-q-title">Question 1</div>
+      <div class="q-sub">Votre réponse : <strong id="modal-letter">A</strong></div>
+      <div class="modal-actions">
+        <button class="btn-incorrect" id="btn-incorrect">Incorrect</button>
+        <button class="btn-correct" id="btn-correct">Correct</button>
       </div>
     </div>
-
-    <div class="finish">
-      <p>Bonne route — et à bientôt sur les routes de Nouméa.</p>
-    </div>
-
   </div>
 
-  <footer>
-    <div class="foot-logo">ATLAS</div>
-    <div class="foot-info">
-      41 rue de l'Alma, Nouméa · 24 06 08<br>
-      atlasautoecole@live.fr
+  <!-- Bannière d'installation -->
+  <div class="install-banner hidden" id="install-banner">
+    <span>Installer Boîtier Code sur cet écran d'accueil ?</span>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <button id="install-btn">Installer</button>
+      <button class="close" id="install-close">✕</button>
     </div>
-    <div class="disclosure">
-      Cette page contient des liens d'affiliation Amazon. En cas d'achat via ces liens, ATLAS Auto-École peut percevoir une commission, sans surcoût pour vous.
-    </div>
-  </footer>
+  </div>
 
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
